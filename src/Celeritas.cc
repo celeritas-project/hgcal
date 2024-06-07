@@ -1,6 +1,7 @@
 #include "Celeritas.hh"
 
 #include <memory>
+#include <G4Version.hh>
 #include <G4Threading.hh>
 #include <accel/AlongStepFactory.hh>
 #include <accel/LocalTransporter.hh>
@@ -29,6 +30,10 @@ SetupOptions& CelerSetupOptions()
         so.max_num_events = 10000;
         so.secondary_stack_factor = 2.0;
         so.ignore_processes = {"CoulombScat"};
+
+        #if G4VERSION_NUMBER >= 1110
+            so.ignore_processes.push_back("Rayl");
+        #endif
 
         // Use Celeritas "hit processor" to call back to Geant4 SDs.
         so.sd.enabled = true;
